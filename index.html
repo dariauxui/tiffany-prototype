@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Tiffany & Co — Designed With You · Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:     #f8f5f0;
+  --white:  #ffffff;
+  --fg:     #0f0f0f;
+  --mid:    #6b6b6b;
+  --soft:   #aaa;
+  --border: #e4e0d8;
+  --T:      #81d8d0;
+  --Tdark:  #0abab5;
+  --Tlight: #edf9f8;
+  --gold:   #c8a96e;
+  --goldL:  #faf3e8;
+  --goldD:  #a8853e;
+  --radius: 10px;
+  --nav-h:  52px;
+  --strip-h: 40px;
+  --bn-h:   60px;
+  --top-offset: 92px;
+}
+html { font-size: 15px; scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Inter', sans-serif; background: #111; color: var(--fg);
+  min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 20px 60px; }
+button { cursor: pointer; font-family: inherit; border: none; background: none; }
+input, textarea, select { font-family: inherit; }
+
+/* ── iPhone 14 Device Frame ─────────────────────────────────────────────── */
+.device { display: flex; flex-direction: column; align-items: center; }
+.phone-body {
+  width: 418px;
+  background: linear-gradient(160deg, #2c2c2c 0%, #181818 50%, #222 100%);
+  border-radius: 56px;
+  padding: 14px;
+  box-shadow:
+    0 0 0 1px #3a3a3a,
+    0 50px 100px rgba(0,0,0,0.85),
+    inset 0 0 0 1px rgba(255,255,255,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  position: relative;
+}
+/* Mute switch + volume buttons (left side) */
+.phone-body::before {
+  content: '';
+  position: absolute;
+  left: -3.5px; top: 96px;
+  width: 3.5px; height: 28px;
+  background: #2a2a2a;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 46px 0 #2a2a2a, 0 88px 0 #2a2a2a;
+}
+/* Power button (right side) */
+.phone-body::after {
+  content: '';
+  position: absolute;
+  right: -3.5px; top: 140px;
+  width: 3.5px; height: 68px;
+  background: #2a2a2a;
+  border-radius: 0 2px 2px 0;
+}
+.phone-screen {
+  width: 390px;
+  height: 844px;
+  background: var(--bg);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+/* Dynamic Island */
+.dynamic-island {
+  position: absolute;
+  top: 10px; left: 50%; transform: translateX(-50%);
+  width: 120px; height: 35px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 99998;
+  pointer-events: none;
+}
+/* iOS Status Bar */
+.ios-sb {
+  flex-shrink: 0;
+  height: 52px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 26px 8px;
+  background: rgba(248,245,240,0.97);
+  position: relative;
+  z-index: 99990;
+}
+.sb-time {
+  font-size: 15px; font-weight: 700; color: var(--fg);
+  letter-spacing: -0.02em;
+}
+.sb-right {
+  display: flex; align-items: center; gap: 6px;
+}
+.sb-signal {
+  display: flex; align-items: flex-end; gap: 1.5px; height: 12px;
+}
+.sb-signal span {
+  width: 3px; background: var(--fg); border-radius: 1px;
+}
+.sb-signal span:nth-child(1) { height: 4px; }
+.sb-signal span:nth-child(2) { height: 6px; }
+.sb-signal span:nth-child(3) { height: 9px; }
+.sb-signal span:nth-child(4) { height: 12px; }
+.sb-wifi {
+  width: 16px; height: 12px;
+}
+.sb-battery {
+  width: 25px; height: 12px;
+  border: 1.5px solid var(--fg); border-radius: 3px;
+  position: relative;
+}
+.sb-battery::before {
+  content: '';
+  position: absolute;
+  right: -5px; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 6px;
+  background: var(--fg); border-radius: 0 2px 2px 0;
+}
+.sb-battery::after {
+  content: '';
+  position: absolute;
+  left: 2px; top: 2px; right: 5px; bottom: 2px;
+  background: var(--fg); border-radius: 1px;
+}
+/* App Shell — flex column filling remaining phone-screen height */
+.app-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+/* Scrollable content area */
+.content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.content-scroll::-webkit-scrollbar { display: none; }
+/* Home Indicator */
+.home-indicator {
+  flex-shrink: 0;
+  height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg);
+}
+.home-indicator::after {
+  content: '';
+  width: 134px; height: 5px;
+  background: rgba(0,0,0,0.18);
+  border-radius: 3px;
+}
+
+/* ── Navigation ──────────────────────────────────────────────────────────── */
+#nav {
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--nav-h); z-index: 200;
+  background: rgba(248,245,240,0.97);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+}
+.nav-brand {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 16px; color: var(--fg); text-decoration: none;
+  letter-spacing: 0.02em;
+}
+.nav-right {
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--border); transition: background 0.2s;
+}
+.nav-dot.active { background: var(--Tdark); }
+.nav-dot.gold.active { background: var(--gold); }
+
+/* ── Journey progress strip ─────────────────────────────────────────────── */
+#journey-strip {
+  flex-shrink: 0;
+  width: 100%; z-index: 190;
+  height: var(--strip-h);
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  overflow-x: auto; scrollbar-width: none; gap: 0;
+  -webkit-overflow-scrolling: touch;
+}
+#journey-strip::-webkit-scrollbar { display: none; }
+.js-step {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 16px; height: 40px;
+  position: relative; flex-shrink: 0;
+}
+.js-step::after {
+  content: '›';
+  position: absolute; right: -3px;
+  font-size: 11px; color: var(--border);
+}
+.js-step:last-child::after { display: none; }
+.js-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 800; color: var(--soft);
+  transition: all 0.3s; flex-shrink: 0;
+}
+.js-step.done .js-num { background: var(--T); border-color: var(--T); color: white; }
+.js-step.active .js-num { background: var(--fg); border-color: var(--fg); color: white; }
+.js-step.gold.active .js-num { background: var(--gold); border-color: var(--gold); }
+.js-text { font-size: 10px; font-weight: 600; color: var(--soft); letter-spacing: 0.04em; white-space: nowrap; transition: color 0.3s; }
+.js-step.done .js-text { color: var(--Tdark); }
+.js-step.active .js-text { color: var(--fg); }
+.js-step.gold.active .js-text { color: var(--gold); }
+
+/* ── Pages ──────────────────────────────────────────────────────────────── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── Hero ───────────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--fg); padding: 28px 20px 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.hero-eyebrow {
+  font-size: 9px; font-weight: 700; color: var(--T);
+  letter-spacing: 0.24em; text-transform: uppercase; margin-bottom: 10px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif; font-weight: 400;
+  font-size: 26px; line-height: 1.2; color: white;
+}
+.hero h1 em { font-style: italic; color: var(--T); }
+.hero h1 em.gold { color: var(--gold); }
+.hero-quote {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 12px; color: rgba(255,255,255,0.35);
+  margin-top: 8px; line-height: 1.65;
+}
+.hero-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.hero-badge {
+  flex-shrink: 0; border: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 20px; border-radius: 8px;
+  background: rgba(255,255,255,0.03); text-align: center;
+}
+.hero-badge .hb-num {
+  font-family: 'Playfair Display', serif; font-size: 30px; color: var(--T);
+}
+.hero-badge.gold .hb-num { color: var(--gold); }
+.hero-badge .hb-label {
+  font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.28);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-top: 4px;
+}
+
+/* ── Layout (mobile: single column, preview on top) ─────────────────────── */
+.layout { display: flex; flex-direction: column; }
+.panel-r {
+  order: -1;
+  padding: 20px 16px;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+}
+.panel-l { padding: 20px 16px; background: var(--white); }
+
+/* ── Section label ──────────────────────────────────────────────────────── */
+.sec-label {
+  font-size: 8px; font-weight: 800; color: var(--Tdark);
+  letter-spacing: 0.24em; text-transform: uppercase;
+  margin-bottom: 12px; margin-top: 28px;
+  display: flex; align-items: center; gap: 8px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-label:first-child { margin-top: 0; }
+
+/* ── Swatch grid ────────────────────────────────────────────────────────── */
+.swatch-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.swatch-item { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.swatch {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 2px solid transparent; cursor: pointer;
+  transition: all 0.2s; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.swatch:hover { transform: scale(1.08); }
+.swatch.selected {
+  box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--fg);
+}
+.swatch-label { font-size: 9px; font-weight: 600; color: var(--mid); text-align: center; line-height: 1.3; }
+.sw-yellow   { background: linear-gradient(135deg, #f0d060, #c8a020); }
+.sw-white    { background: linear-gradient(135deg, #eceef8, #c0c8d8); border: 1px solid #ddd !important; }
+.sw-platinum { background: linear-gradient(135deg, #f4f4fc, #b8bcd0); border: 1px solid #ddd !important; }
+.sw-rose     { background: linear-gradient(135deg, #f4bca8, #dc8870); }
+.sw-diamond  { background: linear-gradient(135deg, #eef8ff, #c0e8f8); border: 1px solid #c8dde8 !important; }
+.sw-emerald  { background: linear-gradient(135deg, #50e090, #189940); }
+.sw-sapphire { background: linear-gradient(135deg, #5898f8, #1840c0); }
+.sw-ruby     { background: linear-gradient(135deg, #f86060, #b02020); }
+.sw-tiffany  { background: linear-gradient(135deg, #a0e8e0, #40c0b8); }
+.sw-morganite{ background: linear-gradient(135deg, #f8c0b8, #e09088); }
+
+/* ── Option buttons ─────────────────────────────────────────────────────── */
+.option-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.opt-btn {
+  padding: 8px 13px; border-radius: 6px; border: 1.5px solid var(--border);
+  font-size: 11px; font-weight: 600; color: var(--mid);
+  background: var(--white); transition: all 0.2s;
+  min-height: 36px;
+}
+.opt-btn:hover { border-color: var(--fg); color: var(--fg); }
+.opt-btn.selected { background: var(--fg); color: var(--white); border-color: var(--fg); }
+.opt-btn.selected.tiffany-sel { background: var(--Tdark); border-color: var(--Tdark); }
+
+/* ── Stepper ────────────────────────────────────────────────────────────── */
+.stepper-wrap { display: flex; align-items: center; gap: 12px; }
+.stepper {
+  display: flex; align-items: center;
+  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  background: var(--white);
+}
+.step-btn {
+  width: 42px; height: 42px; font-size: 18px; font-weight: 300;
+  color: var(--fg); display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.step-btn:hover { background: var(--bg); }
+.step-val {
+  min-width: 64px; text-align: center; font-size: 13px; font-weight: 700;
+  border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  height: 42px; line-height: 42px; padding: 0 6px;
+}
+.step-meta { font-size: 11px; color: var(--soft); font-style: italic; }
+
+/* ── Engraving ──────────────────────────────────────────────────────────── */
+.engraving-wrap { position: relative; }
+.engraving-input {
+  width: 100%; padding: 13px 52px 13px 16px;
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 14px; background: var(--white); outline: none;
+  transition: border-color 0.2s; -webkit-appearance: none;
+}
+.engraving-input:focus { border-color: var(--Tdark); }
+.engraving-count { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--soft); }
+.engraving-preview {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 13px; color: var(--mid); margin-top: 8px; min-height: 20px;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); margin: 24px 0; }
+.divider-sm { height: 1px; background: var(--border); margin: 16px 0; }
+
+/* ── CTA buttons ────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 16px 24px; border-radius: 8px;
+  background: var(--fg); color: white; width: 100%;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: all 0.25s; position: relative; overflow: hidden;
+  min-height: 50px;
+}
+.btn-primary::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--Tdark); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.btn-primary span, .btn-primary .bi { position: relative; z-index: 1; }
+.btn-primary:hover::before { transform: scaleX(1); }
+.btn-primary.gold-btn { background: var(--gold); }
+.btn-primary.gold-btn::before { background: var(--goldD); }
+.btn-primary.tiffany-btn { background: var(--Tdark); }
+.btn-primary.tiffany-btn::before { background: var(--fg); }
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 15px 24px; border-radius: 8px;
+  border: 1.5px solid var(--fg); color: var(--fg); width: 100%;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  transition: all 0.25s; background: transparent;
+  min-height: 50px;
+}
+.btn-outline:hover { background: var(--fg); color: white; }
+.btn-row { display: flex; gap: 10px; margin-top: 20px; }
+.btn-row > * { flex: 1; }
+
+/* ── Ring preview card ──────────────────────────────────────────────────── */
+#preview-wrap { width: 100%; max-width: 360px; }
+#ring-svg { width: 190px; height: 190px; display: block; margin: 0 auto 20px; filter: drop-shadow(0 12px 30px rgba(0,0,0,0.14)); }
+#dream-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.dc-header {
+  background: var(--fg); padding: 12px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.dc-header .dc-title {
+  font-size: 8px; font-weight: 800; color: var(--T);
+  letter-spacing: 0.22em; text-transform: uppercase;
+}
+.dc-header .dc-icon { font-size: 15px; }
+.dc-body { padding: 12px 16px; }
+.dc-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 11px;
+}
+.dc-row:last-child { border-bottom: none; }
+.dc-key { color: var(--mid); font-weight: 500; }
+.dc-val { font-weight: 700; color: var(--fg); text-align: right; max-width: 55%; }
+.dc-box {
+  margin: 10px 0 0;
+  padding: 10px; border-radius: 6px;
+  text-align: center;
+  font-size: 8px; font-weight: 800; color: white;
+  letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+/* ── Save success ────────────────────────────────────────────────────────── */
+#save-success {
+  display: none; background: var(--Tlight); border: 1px solid var(--T);
+  border-radius: var(--radius); padding: 22px 18px; text-align: center;
+  margin-top: 16px; animation: fadeUp 0.4s ease;
+}
+#save-success.show { display: block; }
+.ss-diamond { font-size: 28px; margin-bottom: 8px; }
+#save-success h3 {
+  font-family: 'Playfair Display', serif; font-size: 16px;
+  font-weight: 400; color: var(--fg); margin-bottom: 6px;
+}
+#save-success p { font-size: 12px; color: var(--mid); line-height: 1.65; margin-bottom: 14px; }
+.btn-row-stacked { display: flex; flex-direction: column; gap: 8px; margin-top: 0; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE 2
+   ═══════════════════════════════════════════════════════════════════════════ */
+.p2-wrap { padding: 20px 16px 24px; }
+
+/* Dream piece banner */
+#p2-dream-banner {
+  background: var(--fg); border-radius: var(--radius);
+  padding: 18px 18px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 14px;
+}
+#p2-dream-banner .db-gem { font-size: 24px; flex-shrink: 0; }
+#p2-dream-banner .db-text .db-label {
+  font-size: 8px; font-weight: 800; color: var(--T);
+  letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 4px;
+}
+#p2-dream-banner .db-text .db-name {
+  font-family: 'Playfair Display', serif; font-size: 14px;
+  color: white; font-style: italic;
+}
+#p2-dream-banner .db-text .db-meta { font-size: 10px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+#p2-dream-banner .db-cta {
+  margin-left: auto; flex-shrink: 0;
+  padding: 8px 12px; border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px; font-size: 9px; font-weight: 700;
+  color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Greeting */
+.greeting-card {
+  background: linear-gradient(135deg, #0f0f0f 60%, #0d2020);
+  border-radius: var(--radius); padding: 28px 22px;
+  margin-bottom: 20px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.gc-eyebrow { font-size: 8px; font-weight: 700; color: var(--T); letter-spacing: 0.26em; text-transform: uppercase; margin-bottom: 8px; }
+.gc-heading { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 400; color: white; line-height: 1.25; }
+.gc-heading em { font-style: italic; color: var(--T); }
+.gc-body { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 8px; line-height: 1.65; }
+.gc-badge { border: 1px solid rgba(255,255,255,0.08); padding: 18px 20px; border-radius: 8px; background: rgba(255,255,255,0.03); text-align: center; align-self: flex-start; }
+.gc-badge .gci { font-size: 32px; line-height: 1; }
+.gc-badge .gcl { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.25); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 6px; }
+
+/* Milestone tabs - horizontal scroll */
+.milestone-tabs {
+  display: flex; gap: 7px; margin-bottom: 20px;
+  overflow-x: auto; scrollbar-width: none; padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+.milestone-tabs::-webkit-scrollbar { display: none; }
+.m-tab {
+  padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 100px;
+  font-size: 11px; font-weight: 600; color: var(--mid);
+  background: var(--white); transition: all 0.2s;
+  display: flex; align-items: center; gap: 5px;
+  flex-shrink: 0; white-space: nowrap;
+  min-height: 38px;
+}
+.m-tab:hover { border-color: var(--fg); color: var(--fg); }
+.m-tab.active { background: var(--fg); color: white; border-color: var(--fg); }
+
+/* Product grid - 2 columns on mobile */
+.products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.prod-card {
+  background: var(--white); border-radius: var(--radius);
+  border: 1px solid var(--border); overflow: hidden;
+  transition: all 0.3s; position: relative;
+}
+.prod-img {
+  height: 150px; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(150deg, #f4f1ec, #ece8e2); position: relative;
+}
+.prod-tag {
+  position: absolute; top: 10px; left: 10px;
+  font-size: 7px; font-weight: 800; color: var(--Tdark);
+  letter-spacing: 0.16em; text-transform: uppercase;
+  background: var(--Tlight); padding: 4px 8px; border-radius: 4px;
+}
+.prod-body { padding: 12px 14px 14px; }
+.prod-name { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 400; color: var(--fg); line-height: 1.35; }
+.prod-tagline { font-size: 10px; font-style: italic; color: var(--soft); margin-top: 3px; line-height: 1.45; }
+.prod-price { font-size: 14px; font-weight: 700; color: var(--fg); margin-top: 8px; }
+.prod-actions { display: flex; gap: 6px; margin-top: 10px; }
+.wl-btn {
+  flex: 1; padding: 8px 8px; border: 1.5px solid var(--border);
+  border-radius: 7px; font-size: 10px; font-weight: 600; color: var(--mid);
+  background: var(--white); transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  min-height: 36px;
+}
+.wl-btn:hover { border-color: #c0204a; color: #c0204a; }
+.wl-btn.saved { background: #fff0f4; border-color: #c0204a; color: #c0204a; }
+.preview-link {
+  padding: 8px 10px; border: 1.5px solid var(--border);
+  border-radius: 7px; font-size: 10px; font-weight: 600; color: var(--mid);
+  background: var(--white); transition: all 0.2s;
+  min-height: 36px;
+}
+.preview-link:hover { border-color: var(--Tdark); color: var(--Tdark); }
+
+/* Boutique CTA strip */
+.boutique-cta {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px 20px;
+  display: flex; flex-direction: column; gap: 20px;
+}
+.boutique-cta .bc-eyebrow { font-size: 8px; font-weight: 700; color: var(--gold); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 8px; }
+.boutique-cta h3 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 400; color: var(--fg); line-height: 1.35; }
+.boutique-cta h3 em { font-style: italic; color: var(--gold); }
+.boutique-cta p { font-size: 12px; color: var(--mid); margin-top: 6px; line-height: 1.65; }
+.boutique-cta .btn-primary { width: 100%; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAGE 3
+   ═══════════════════════════════════════════════════════════════════════════ */
+.p3-wrap { padding: 20px 16px 24px; }
+
+/* Preparation banner */
+.prep-banner {
+  background: var(--fg); border-radius: var(--radius);
+  padding: 22px 20px; margin-bottom: 20px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.prep-icon { font-size: 26px; flex-shrink: 0; }
+.prep-text .prep-eyebrow {
+  font-size: 8px; font-weight: 800; color: var(--gold);
+  letter-spacing: 0.24em; text-transform: uppercase; margin-bottom: 6px;
+}
+.prep-text h3 { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 400; color: white; font-style: italic; line-height: 1.35; }
+.prep-text p { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 5px; line-height: 1.65; }
+.prep-steps { display: flex; flex-direction: column; gap: 8px; }
+.prep-step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: rgba(255,255,255,0.5);
+}
+.prep-step .ps-dot {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800;
+}
+.prep-step.done .ps-dot { background: var(--gold); color: white; }
+.prep-step.done { color: rgba(255,255,255,0.75); }
+.prep-step.pending .ps-dot { border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.3); }
+
+/* Booking grid - single column */
+.booking-grid { display: flex; flex-direction: column; gap: 14px; }
+.bk-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 18px;
+}
+.bk-card h3 {
+  font-size: 8px; font-weight: 800; color: var(--Tdark);
+  letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 14px;
+}
+.bk-card h3.gold-h { color: var(--gold); }
+
+/* Store selector */
+.store-opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 12px; border-radius: 8px;
+  border: 1.5px solid var(--border); cursor: pointer;
+  transition: all 0.2s; margin-bottom: 8px;
+  min-height: 50px;
+}
+.store-opt:last-child { margin-bottom: 0; }
+.store-opt:hover { border-color: var(--fg); }
+.store-opt.selected { border-color: var(--Tdark); background: var(--Tlight); }
+.so-icon { font-size: 16px; flex-shrink: 0; }
+.so-name { font-size: 13px; font-weight: 700; color: var(--fg); }
+.so-addr { font-size: 10px; color: var(--mid); margin-top: 2px; }
+.so-check {
+  margin-left: auto; width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: white; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; transition: all 0.2s;
+}
+.store-opt.selected .so-check { background: var(--Tdark); border-color: var(--Tdark); color: white; }
+
+/* Calendar */
+.cal-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.cal-month { font-size: 13px; font-weight: 700; color: var(--fg); }
+.cal-nav {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--border); font-size: 14px; color: var(--mid);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: all 0.2s;
+}
+.cal-nav:hover { background: var(--fg); color: white; border-color: var(--fg); }
+.cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cal-dn { text-align: center; font-size: 8px; font-weight: 800; color: var(--soft); letter-spacing: 0.06em; padding: 4px 0; text-transform: uppercase; }
+.cal-day {
+  aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s;
+  min-height: 34px;
+}
+.cal-day:hover:not(.disabled):not(.empty) { background: var(--Tlight); color: var(--Tdark); }
+.cal-day.selected { background: var(--Tdark) !important; color: white !important; font-weight: 700; }
+.cal-day.today { font-weight: 800; color: var(--Tdark); }
+.cal-day.disabled { color: var(--border); cursor: default; }
+.cal-day.empty { cursor: default; }
+
+/* Time slots */
+.time-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.time-slot {
+  padding: 11px 6px; text-align: center;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  font-size: 12px; font-weight: 600; color: var(--mid);
+  cursor: pointer; transition: all 0.2s;
+  min-height: 42px;
+}
+.time-slot:hover:not(.taken) { border-color: var(--Tdark); color: var(--Tdark); background: var(--Tlight); }
+.time-slot.selected { background: var(--Tdark); border-color: var(--Tdark); color: white; }
+.time-slot.taken { color: var(--border); cursor: default; text-decoration: line-through; font-size: 11px; }
+
+/* SA cards */
+.sa-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.sa-card {
+  border: 1.5px solid var(--border); border-radius: 10px;
+  padding: 14px 8px; text-align: center; cursor: pointer;
+  transition: all 0.2s;
+  min-height: 44px;
+}
+.sa-card:hover { border-color: var(--fg); }
+.sa-card.selected { border-color: var(--Tdark); background: var(--Tlight); }
+.sa-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  margin: 0 auto 7px; display: flex; align-items: center;
+  justify-content: center; font-size: 15px; font-weight: 800; color: white;
+}
+.sa-name { font-size: 11px; font-weight: 700; color: var(--fg); }
+.sa-role { font-size: 9px; color: var(--mid); margin-top: 2px; }
+.sa-lang { font-size: 8px; color: var(--soft); margin-top: 3px; letter-spacing: 0.06em; }
+.sa-status { font-size: 8px; color: var(--Tdark); font-weight: 600; margin-top: 4px; }
+
+/* Dream piece recap in p3 */
+.dp-recap-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 18px;
+  display: flex; align-items: center; gap: 14px;
+}
+.dp-recap-card .dpr-gem { font-size: 24px; flex-shrink: 0; }
+.dp-recap-card .dpr-label {
+  font-size: 8px; font-weight: 800; color: var(--Tdark);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 3px;
+}
+.dp-recap-card .dpr-name {
+  font-family: 'Playfair Display', serif; font-size: 14px; color: var(--fg);
+}
+.dp-recap-card .dpr-meta { font-size: 10px; color: var(--mid); margin-top: 3px; font-style: italic; }
+.dp-recap-card .dpr-edit {
+  margin-left: auto; font-size: 10px; font-weight: 700;
+  color: var(--Tdark); letter-spacing: 0.06em; text-transform: uppercase;
+  text-decoration: underline; cursor: pointer; flex-shrink: 0;
+}
+
+/* Message textarea */
+.booking-ta {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 13px; resize: vertical;
+  min-height: 80px; outline: none; transition: border-color 0.2s;
+  background: var(--white); color: var(--fg); line-height: 1.5;
+  -webkit-appearance: none;
+}
+.booking-ta:focus { border-color: var(--Tdark); }
+.booking-ta::placeholder { color: var(--soft); font-style: italic; }
+
+/* Appointment summary */
+.appt-summary {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 18px; margin-top: 14px;
+}
+.appt-summary h3 { font-size: 8px; font-weight: 800; color: var(--gold); letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 14px; }
+.sum-row { display: flex; gap: 8px; font-size: 12px; color: var(--mid); margin-bottom: 8px; align-items: flex-start; }
+.sum-row .sr-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+.sum-row .sr-val { color: var(--fg); font-weight: 700; }
+.appt-note {
+  margin-top: 14px; padding: 12px; background: var(--goldL);
+  border-radius: 8px; border-left: 3px solid var(--gold);
+  font-size: 12px; color: var(--mid); line-height: 1.6; font-style: italic;
+}
+
+/* Confirmation state */
+#booking-success {
+  display: none; background: var(--fg); border-radius: var(--radius);
+  padding: 36px 24px; text-align: center; margin-top: 14px;
+}
+#booking-success.show { display: block; animation: fadeUp 0.5s ease; }
+.bs-diamond { font-size: 40px; margin-bottom: 14px; }
+#booking-success h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; color: white; line-height: 1.3; }
+#booking-success h2 em { font-style: italic; color: var(--T); }
+#booking-success .bs-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: rgba(255,255,255,0.35); margin-top: 10px; line-height: 1.65; }
+.bs-ceremony {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 0;
+  margin: 28px auto; border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 24px;
+}
+.bs-cer-step { padding: 0 10px 16px; text-align: center; position: relative; }
+.bs-cer-step::after { display: none; }
+.bs-cer-icon { font-size: 20px; margin-bottom: 8px; }
+.bs-cer-label { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.4; }
+.bs-ref-block {
+  display: inline-block; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  padding: 12px 24px; margin-top: 6px;
+}
+.bs-ref-label { font-size: 8px; font-weight: 700; color: var(--T); letter-spacing: 0.2em; text-transform: uppercase; }
+.bs-ref-val { font-size: 18px; font-weight: 800; color: white; letter-spacing: 0.05em; margin-top: 4px; }
+
+/* ── Preview overlay ────────────────────────────────────────────────────── */
+#pv-overlay {
+  position: absolute; inset: 0;
+  background: #060808;
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 24px 28px;
+}
+#pv-overlay.show { display: flex; animation: fadeUp 0.3s ease; }
+.pv-close {
+  position: absolute; top: 56px; right: 18px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.07); border: none; cursor: pointer;
+  color: rgba(255,255,255,0.5); font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; font-family: inherit;
+}
+.pv-close:hover { background: rgba(255,255,255,0.14); color: #fff; }
+.pv-eyebrow {
+  font-size: 8px; font-weight: 700; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--T);
+  margin-bottom: 10px; text-align: center; opacity: 0.65;
+}
+#pv-ring {
+  width: 230px; height: 230px; display: block;
+  filter: drop-shadow(0 0 44px rgba(129,216,208,0.22)) drop-shadow(0 20px 40px rgba(0,0,0,0.55));
+  animation: pvFloat 3.2s ease-in-out infinite;
+}
+@keyframes pvFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-9px); }
+}
+.pv-name {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 20px; font-weight: 400; color: #fff;
+  text-align: center; margin-top: 18px; line-height: 1.3;
+}
+.pv-meta {
+  font-size: 11px; color: rgba(255,255,255,0.28);
+  text-align: center; margin-top: 5px; line-height: 1.75;
+}
+.pv-eng {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 13px; color: var(--T); opacity: 0.85;
+  text-align: center; margin-top: 7px; min-height: 18px;
+}
+.pv-sep {
+  width: 44px; height: 1px;
+  background: rgba(255,255,255,0.08); margin: 16px auto 0;
+}
+.pv-footer {
+  width: 100%; margin-top: auto; padding-top: 16px;
+}
+.pv-stamp {
+  font-size: 8px; font-weight: 800; letter-spacing: 0.26em;
+  text-transform: uppercase; color: rgba(255,255,255,0.1);
+  text-align: center; margin-bottom: 14px;
+}
+
+/* ── Bottom Navigation ───────────────────────────────────────────────────── */
+#bottom-nav {
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--bn-h);
+  background: var(--white); border-top: 1px solid var(--border);
+  display: flex; align-items: stretch; z-index: 300;
+}
+.bn-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; background: none; border: none; cursor: pointer;
+  transition: background 0.15s; padding: 8px 4px 8px;
+  position: relative;
+}
+.bn-tab::before {
+  content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px;
+  background: var(--Tdark); transform: scaleX(0); transition: transform 0.25s;
+  border-radius: 0 0 2px 2px;
+}
+.bn-tab.active::before { transform: scaleX(1); }
+.bn-tab.active .bn-label { color: var(--Tdark); }
+.bn-tab.gold.active::before { background: var(--gold); }
+.bn-tab.gold.active .bn-label { color: var(--gold); }
+.bn-icon { font-size: 18px; line-height: 1; }
+.bn-label {
+  font-size: 9px; font-weight: 700; color: var(--soft);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="phone-body">
+    <div class="phone-screen">
+      <!-- Dynamic Island -->
+      <div class="dynamic-island"></div>
+      <!-- iOS Status Bar -->
+      <div class="ios-sb">
+        <span class="sb-time">9:41</span>
+        <div class="sb-right">
+          <div class="sb-signal">
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <svg class="sb-wifi" viewBox="0 0 16 12" fill="none">
+            <path d="M8 9.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" fill="#0f0f0f"/>
+            <path d="M3.5 6.5C5 5 6.4 4.2 8 4.2s3 .8 4.5 2.3" stroke="#0f0f0f" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+            <path d="M1 4C3.2 2 5.5 1 8 1s4.8 1 7 3" stroke="#0f0f0f" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          </svg>
+          <div class="sb-battery"></div>
+        </div>
+      </div>
+      <!-- App Shell -->
+      <div class="app-shell">
+
+<!-- ── NAV ──────────────────────────────────────────────────────────────────── -->
+<nav id="nav">
+  <a class="nav-brand" href="#" onclick="showPage(1);return false;">Tiffany &amp; Co</a>
+  <div class="nav-right">
+    <div class="nav-dot active" id="nd1"></div>
+    <div class="nav-dot" id="nd2"></div>
+    <div class="nav-dot gold" id="nd3"></div>
+  </div>
+</nav>
+
+<!-- ── JOURNEY PROGRESS STRIP ────────────────────────────────────────────── -->
+<div id="journey-strip">
+  <div class="js-step active" id="js1">
+    <div class="js-num">1</div>
+    <div class="js-text">Design Your Piece</div>
+  </div>
+  <div class="js-step" id="js2">
+    <div class="js-num">2</div>
+    <div class="js-text">We Remember You</div>
+  </div>
+  <div class="js-step gold" id="js3">
+    <div class="js-num">3</div>
+    <div class="js-text">The Boutique Awaits</div>
+  </div>
+</div>
+
+<div class="content-scroll" id="content-scroll">
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     PAGE 1 — The Atelier Room
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page1">
+  <div class="hero">
+    <div class="hero-row">
+      <div>
+        <div class="hero-eyebrow">01 · Digital · The Atelier Room</div>
+        <h1>Begin With<br>What <em>Endures</em></h1>
+      </div>
+      <div class="hero-badge">
+        <div class="hb-num">∞</div>
+        <div class="hb-label">Combinations</div>
+      </div>
+    </div>
+    <p class="hero-quote">"Every choice you make here becomes a gesture of love — held in metal, carried across time."</p>
+  </div>
+
+  <div class="layout">
+    <!-- RIGHT: Live preview (shown first on mobile via CSS order) -->
+    <div class="panel-r">
+      <div id="preview-wrap">
+        <svg id="ring-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sGrad" cx="50%" cy="35%" r="55%">
+              <stop id="sg1" offset="0%" stop-color="#eef8ff"/>
+              <stop id="sg2" offset="100%" stop-color="#c0e4f8"/>
+            </radialGradient>
+            <linearGradient id="bGrad" x1="0" y1="0" x2="100%" y2="100%">
+              <stop id="bg1" offset="0%" stop-color="#f0f0f8"/>
+              <stop id="bg2" offset="100%" stop-color="#b8bcd0"/>
+            </linearGradient>
+            <filter id="glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <ellipse cx="120" cy="218" rx="50" ry="8" fill="rgba(0,0,0,0.07)"/>
+          <path id="svg-band-btm" d="M 62 150 Q 120 186 178 150" fill="none" stroke="url(#bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line id="svg-band-l" x1="62" y1="112" x2="62" y2="152" stroke="url(#bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line id="svg-band-r" x1="178" y1="112" x2="178" y2="152" stroke="url(#bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <path id="svg-band-top" d="M 62 112 Q 120 94 178 112" fill="none" stroke="url(#bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line id="sv-p1" x1="104" y1="100" x2="98"  y2="76" stroke="url(#bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line id="sv-p2" x1="136" y1="100" x2="142" y2="76" stroke="url(#bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line id="sv-p3" x1="120" y1="96"  x2="120" y2="66" stroke="url(#bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line id="sv-p4" x1="108" y1="98"  x2="100" y2="82" stroke="url(#bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line id="sv-p5" x1="132" y1="98"  x2="140" y2="82" stroke="url(#bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <g id="svg-stone" filter="url(#glow)">
+            <polygon id="sv-main" points="120,42 152,72 120,110 88,72" fill="url(#sGrad)" stroke="#c8dde8" stroke-width="1"/>
+            <polygon id="sv-table" points="120,50 144,72 120,98 96,72" fill="rgba(255,255,255,0.3)"/>
+            <line x1="88" y1="72" x2="152" y2="72" stroke="rgba(255,255,255,0.45)" stroke-width="0.8"/>
+            <line x1="120" y1="42" x2="120" y2="110" stroke="rgba(255,255,255,0.35)" stroke-width="0.8"/>
+          </g>
+          <text id="svg-eng" x="120" y="156" text-anchor="middle" font-family="Playfair Display,serif" font-style="italic" font-size="9" fill="rgba(255,255,255,0.65)"></text>
+        </svg>
+
+        <div id="dream-card">
+          <div class="dc-header">
+            <span class="dc-title">✦ Your Dream Piece</span>
+            <span class="dc-icon">💍</span>
+          </div>
+          <div class="dc-body">
+            <div class="dc-row"><span class="dc-key">Metal</span><span class="dc-val" id="dc-metal">Platinum</span></div>
+            <div class="dc-row"><span class="dc-key">Stone</span><span class="dc-val" id="dc-stone">Diamond</span></div>
+            <div class="dc-row"><span class="dc-key">Cut</span><span class="dc-val" id="dc-cut">Round Brilliant</span></div>
+            <div class="dc-row"><span class="dc-key">Carat</span><span class="dc-val" id="dc-carat">1.00 ct</span></div>
+            <div class="dc-row"><span class="dc-key">Band</span><span class="dc-val" id="dc-band">Plain · High Polish</span></div>
+            <div class="dc-row"><span class="dc-key">Type</span><span class="dc-val" id="dc-type">Ring · Size 6</span></div>
+            <div class="dc-row"><span class="dc-key">Engraving</span><span class="dc-val" id="dc-eng" style="font-style:italic;">None</span></div>
+            <div class="dc-box" id="dc-box" style="background:linear-gradient(135deg,#b8bcd0,#8890a8);">
+              TIFFANY &amp; CO &nbsp;·&nbsp; EST. 1837
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEFT: Configurator -->
+    <div class="panel-l">
+      <div class="sec-label">Your Metal</div>
+      <div class="swatch-row" id="metal-row">
+        <div class="swatch-item">
+          <div class="swatch sw-platinum selected" onclick="selectSwatch('metal','platinum',this)"></div>
+          <div class="swatch-label">Platinum</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-yellow" onclick="selectSwatch('metal','yellow',this)"></div>
+          <div class="swatch-label">Yellow<br>Gold</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-white" onclick="selectSwatch('metal','white',this)"></div>
+          <div class="swatch-label">White<br>Gold</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-rose" onclick="selectSwatch('metal','rose',this)"></div>
+          <div class="swatch-label">Rose<br>Gold</div>
+        </div>
+      </div>
+
+      <div class="sec-label">Your Stone</div>
+      <div class="swatch-row" id="stone-row">
+        <div class="swatch-item">
+          <div class="swatch sw-diamond selected" onclick="selectSwatch('stone','diamond',this)">
+            <svg width="16" height="16" viewBox="0 0 18 18"><polygon points="9,1 17,7 9,17 1,7" fill="none" stroke="#8ab" stroke-width="1.2"/><line x1="1" y1="7" x2="17" y2="7" stroke="#8ab" stroke-width="0.8"/></svg>
+          </div>
+          <div class="swatch-label">Diamond</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-tiffany" onclick="selectSwatch('stone','tiffany',this)"></div>
+          <div class="swatch-label">Tiffany<br>Blue</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-emerald" onclick="selectSwatch('stone','emerald',this)"></div>
+          <div class="swatch-label">Emerald</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-sapphire" onclick="selectSwatch('stone','sapphire',this)"></div>
+          <div class="swatch-label">Sapphire</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-ruby" onclick="selectSwatch('stone','ruby',this)"></div>
+          <div class="swatch-label">Ruby</div>
+        </div>
+        <div class="swatch-item">
+          <div class="swatch sw-morganite" onclick="selectSwatch('stone','morganite',this)"></div>
+          <div class="swatch-label">Morganite</div>
+        </div>
+      </div>
+
+      <div class="sec-label">Diamond Cut</div>
+      <div class="option-row" id="cut-row">
+        <button class="opt-btn selected" onclick="selectOpt('cut','round',this)">Round Brilliant</button>
+        <button class="opt-btn" onclick="selectOpt('cut','oval',this)">Oval</button>
+        <button class="opt-btn" onclick="selectOpt('cut','princess',this)">Princess</button>
+        <button class="opt-btn" onclick="selectOpt('cut','emerald',this)">Emerald Cut</button>
+        <button class="opt-btn" onclick="selectOpt('cut','pear',this)">Pear</button>
+        <button class="opt-btn" onclick="selectOpt('cut','cushion',this)">Cushion</button>
+      </div>
+
+      <div class="sec-label">Carat Weight</div>
+      <div class="stepper-wrap">
+        <div class="stepper">
+          <button class="step-btn" onclick="changeCarat(-0.25)">−</button>
+          <div class="step-val" id="carat-val">1.00 ct</div>
+          <button class="step-btn" onclick="changeCarat(0.25)">+</button>
+        </div>
+        <span class="step-meta">0.50 – 5.00 ct</span>
+      </div>
+
+      <div class="sec-label">Band Style</div>
+      <div class="option-row" id="band-row">
+        <button class="opt-btn selected" onclick="selectOpt('band','plain',this)">Plain</button>
+        <button class="opt-btn" onclick="selectOpt('band','pavé',this)">Pavé</button>
+        <button class="opt-btn" onclick="selectOpt('band','milgrain',this)">Milgrain</button>
+        <button class="opt-btn" onclick="selectOpt('band','channel',this)">Channel Set</button>
+        <button class="opt-btn" onclick="selectOpt('band','twisted',this)">Twisted</button>
+      </div>
+
+      <div class="sec-label">Piece Type</div>
+      <div class="option-row" id="type-row">
+        <button class="opt-btn selected" onclick="selectOpt('type','ring',this)">Ring</button>
+        <button class="opt-btn" onclick="selectOpt('type','pendant',this)">Pendant</button>
+        <button class="opt-btn" onclick="selectOpt('type','bracelet',this)">Bracelet</button>
+        <button class="opt-btn" onclick="selectOpt('type','earrings',this)">Earrings</button>
+      </div>
+
+      <div id="size-row">
+        <div class="sec-label">Your Fit</div>
+        <div class="stepper-wrap">
+          <div class="stepper">
+            <button class="step-btn" onclick="changeSize(-0.5)">−</button>
+            <div class="step-val" id="size-val">6</div>
+            <button class="step-btn" onclick="changeSize(0.5)">+</button>
+          </div>
+          <span class="step-meta step-meta-link" style="cursor:pointer;text-decoration:underline;color:var(--Tdark);" onclick="alert('EU 52 = US 6  ·  EU 54 = US 7  ·  EU 56 = US 8  ·  EU 58 = US 9')">Find your size</span>
+        </div>
+      </div>
+
+      <div class="sec-label">Finish</div>
+      <div class="option-row" id="finish-row">
+        <button class="opt-btn selected" onclick="selectOpt('finish','polished',this)">High Polish</button>
+        <button class="opt-btn" onclick="selectOpt('finish','brushed',this)">Brushed</button>
+        <button class="opt-btn" onclick="selectOpt('finish','hammered',this)">Hammered</button>
+        <button class="opt-btn" onclick="selectOpt('finish','satin',this)">Satin</button>
+      </div>
+
+      <div class="sec-label">Your Words <span style="font-weight:400;color:var(--soft);text-transform:none;letter-spacing:0;font-size:10px;"> — up to 24 characters</span></div>
+      <div class="engraving-wrap">
+        <input class="engraving-input" id="eng-input" type="text" maxlength="24"
+          placeholder="e.g. Together always · 14.02.2018"
+          oninput="updateEngraving(this.value)">
+        <span class="engraving-count"><span id="eng-cnt">0</span>/24</span>
+      </div>
+      <div class="engraving-preview" id="eng-prev"></div>
+
+      <div class="divider"></div>
+
+      <div class="btn-row" style="margin-top:0;">
+        <button class="btn-primary" id="save-btn" onclick="savepiece()">
+          <span>Preserve This Piece</span>
+          <span class="bi">→</span>
+        </button>
+        <button class="btn-outline" onclick="openPreview()" style="flex:0 0 52px;padding:15px 0;" title="Preview your piece">
+          <span style="font-size:16px;">👁</span>
+        </button>
+      </div>
+
+      <div id="save-success">
+        <div class="ss-diamond">💎</div>
+        <h3>Your piece is held — exactly as imagined.</h3>
+        <p>We've saved every detail. Your stylist will receive it before your visit.</p>
+        <div class="btn-row-stacked">
+          <button class="btn-outline" style="font-size:10px;padding:13px 16px;" onclick="showPage(2)"><span>See Your Recommendations</span></button>
+          <button class="btn-primary tiffany-btn" style="font-size:10px;padding:13px 16px;" onclick="showPage(3)"><span>Reserve Your Appointment</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     PAGE 2 — Milestone Concierge
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page2">
+  <div class="hero" style="background:linear-gradient(135deg,#0f0f0f 55%,#0a1c1a);">
+    <div class="hero-row">
+      <div>
+        <div class="hero-eyebrow">02 · Digital · Milestone Concierge</div>
+        <h1>Some Moments<br><em>Announce Themselves</em></h1>
+      </div>
+      <div class="hero-badge">
+        <div class="hb-num" style="color:var(--T);font-size:20px;">CRM</div>
+        <div class="hb-label">Triggered</div>
+      </div>
+    </div>
+    <p class="hero-quote">"We noticed something beautiful approaching in your story. We've been preparing ever since."</p>
+  </div>
+
+  <div class="p2-wrap">
+    <div id="p2-dream-banner">
+      <div class="db-gem">💎</div>
+      <div class="db-text">
+        <div class="db-label">✦ Your saved piece</div>
+        <div class="db-name" id="p2-dp-name">Solitaire Ring — Platinum · Diamond</div>
+        <div class="db-meta" id="p2-dp-meta">Ready for your stylist</div>
+      </div>
+      <button class="db-cta" onclick="showPage(1)">Edit</button>
+    </div>
+
+    <div class="greeting-card">
+      <div>
+        <div class="gc-eyebrow">Your upcoming milestone</div>
+        <div class="gc-heading">A beautiful <em id="ms-title">anniversary</em><br>is approaching, Daria.</div>
+        <div class="gc-body" id="ms-body">"Eleven years of choosing each other, every morning. We thought that deserved something that says it without a single word."</div>
+      </div>
+      <div class="gc-badge">
+        <div class="gci" id="ms-icon">🥂</div>
+        <div class="gcl" id="ms-label">Anniversary</div>
+      </div>
+    </div>
+
+    <div class="milestone-tabs">
+      <button class="m-tab active" onclick="selectMilestone(this,'anniversary','anniversary','🥂','A beautiful anniversary','Eleven years of choosing each other, every morning. We thought that deserved something that says it without a single word.')">🥂 Anniversary</button>
+      <button class="m-tab" onclick="selectMilestone(this,'birthday','birthday','🎂','A birthday worth marking','Another year of becoming. We found pieces that honour who you\'re becoming.')">🎂 Birthday</button>
+      <button class="m-tab" onclick="selectMilestone(this,'graduation','graduation','🎓','A new chapter begins','Everything you worked for is now yours. Wear something that remembers this exact feeling.')">🎓 Graduation</button>
+      <button class="m-tab" onclick="selectMilestone(this,'proposal','a proposal','💍','The most important question','You\'re about to ask something that changes everything. Let the ring answer too.')">💍 Proposal</button>
+      <button class="m-tab" onclick="selectMilestone(this,'self-gift','a self-gift','✨','The gift of becoming','You\'ve earned this. Not as a reward — as a reminder of what you\'re made of.')">✨ Self-Gift</button>
+    </div>
+
+    <div class="products-grid" id="products-grid"></div>
+
+    <div class="boutique-cta">
+      <div class="bc-left">
+        <div class="bc-eyebrow">✦ The next step</div>
+        <h3>Your stylist is <em>ready to meet your piece.</em></h3>
+        <p>Your saved design has already been sent ahead. Your Style Advisor will have the physical pieces prepared, side by side with your vision.</p>
+      </div>
+      <button class="btn-primary gold-btn" onclick="showPage(3)">
+        <span>Reserve Your Private Moment</span>
+        <span class="bi">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════
+     PAGE 3 — The Blue Atelier Session
+     ══════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page3">
+  <div class="hero" style="background:linear-gradient(135deg,#0f0f0f 55%,#1a1008);">
+    <div class="hero-row">
+      <div>
+        <div class="hero-eyebrow">03 · Physical · Blue Atelier Session</div>
+        <h1>Your Dream Piece,<br><em class="gold">Brought to Life</em></h1>
+      </div>
+      <div class="hero-badge gold">
+        <div class="hb-num">45</div>
+        <div class="hb-label">Min · Private</div>
+      </div>
+    </div>
+    <p class="hero-quote">"A private 45 minutes where your vision meets the real."</p>
+  </div>
+
+  <div class="p3-wrap">
+
+    <div class="prep-banner">
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <div class="prep-icon">🤍</div>
+        <div class="prep-text">
+          <div class="prep-eyebrow">✦ Your piece is being prepared</div>
+          <h3>"We have your vision. Now let it become something you can hold."</h3>
+          <p>Your Style Advisor has received your Dream Piece and is sourcing the physical pieces for comparison.</p>
+        </div>
+      </div>
+      <div class="prep-steps">
+        <div class="prep-step done"><div class="ps-dot">✓</div><span>Dream Piece received</span></div>
+        <div class="prep-step done"><div class="ps-dot">✓</div><span>Physical samples selected</span></div>
+        <div class="prep-step done"><div class="ps-dot">✓</div><span>Engraving template prepared</span></div>
+        <div class="prep-step pending"><div class="ps-dot">○</div><span>Awaiting your appointment</span></div>
+      </div>
+    </div>
+
+    <div class="booking-grid">
+
+      <!-- Dream piece recap -->
+      <div class="dp-recap-card">
+        <div class="dpr-gem">💎</div>
+        <div>
+          <div class="dpr-label">✦ Your Saved Dream Piece</div>
+          <div class="dpr-name" id="p3-dp-name">Solitaire Ring — Platinum · Diamond</div>
+          <div class="dpr-meta" id="p3-dp-meta">1.00 ct · Round Brilliant · Plain band · High Polish · No engraving</div>
+        </div>
+        <span class="dpr-edit" onclick="showPage(1)">Edit ↗</span>
+      </div>
+
+      <!-- Store -->
+      <div class="bk-card">
+        <h3>Choose Your Boutique</h3>
+        <div class="store-opt selected" id="st1" onclick="selectStore(this,1)">
+          <span class="so-icon">🏛</span>
+          <div><div class="so-name">Bond Street</div><div class="so-addr">25 Old Bond Street, London W1S 4QB</div></div>
+          <div class="so-check">✓</div>
+        </div>
+        <div class="store-opt" id="st2" onclick="selectStore(this,2)">
+          <span class="so-icon">🏛</span>
+          <div><div class="so-name">Canary Wharf</div><div class="so-addr">Jubilee Place, London E14 5NY</div></div>
+          <div class="so-check"></div>
+        </div>
+        <div class="store-opt" id="st3" onclick="selectStore(this,3)">
+          <span class="so-icon">🏛</span>
+          <div><div class="so-name">Knightsbridge</div><div class="so-addr">Harrods, Brompton Road SW1X 7XL</div></div>
+          <div class="so-check"></div>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="bk-card">
+        <h3>Select Your Date</h3>
+        <div class="cal-hd">
+          <button class="cal-nav" onclick="prevMonth()">‹</button>
+          <span class="cal-month" id="cal-label"></span>
+          <button class="cal-nav" onclick="nextMonth()">›</button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+
+      <!-- Time -->
+      <div class="bk-card">
+        <h3>Your Time</h3>
+        <div class="time-grid" id="time-grid"></div>
+        <p style="font-size:11px;color:var(--soft);margin-top:10px;font-style:italic;">Each session is a private 45-minute appointment.</p>
+      </div>
+
+      <!-- Style Advisor -->
+      <div class="bk-card">
+        <h3 class="gold-h">Your Style Advisor</h3>
+        <div class="sa-grid">
+          <div class="sa-card selected" id="sa0" onclick="selectSA(this,0)">
+            <div class="sa-av" style="background:#1a3530;">M</div>
+            <div class="sa-name">Mia Chen</div>
+            <div class="sa-role">Senior Advisor</div>
+            <div class="sa-lang">EN · ZH</div>
+            <div class="sa-status">Preparing your piece</div>
+          </div>
+          <div class="sa-card" id="sa1" onclick="selectSA(this,1)">
+            <div class="sa-av" style="background:#1a1a2e;">J</div>
+            <div class="sa-name">James Osei</div>
+            <div class="sa-role">Style Advisor</div>
+            <div class="sa-lang">EN · FR</div>
+            <div class="sa-status">Available</div>
+          </div>
+          <div class="sa-card" id="sa2" onclick="selectSA(this,2)">
+            <div class="sa-av" style="background:#2a1808;">S</div>
+            <div class="sa-name">Sofia Reyes</div>
+            <div class="sa-role">Bridal Specialist</div>
+            <div class="sa-lang">EN · ES</div>
+            <div class="sa-status">Available</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /booking-grid -->
+
+    <!-- Message + summary -->
+    <div class="appt-summary">
+      <h3>A Note for Your Advisor</h3>
+      <textarea class="booking-ta" id="bk-msg"
+        placeholder="e.g. This is a surprise for my partner. I'd love to compare the Platinum and White Gold in person…"></textarea>
+
+      <div class="divider-sm"></div>
+      <h3>Your Appointment</h3>
+      <div class="sum-row"><span class="sr-icon">🏛</span><span>Boutique: &nbsp;<span class="sr-val" id="sum-store">Bond Street, London</span></span></div>
+      <div class="sum-row"><span class="sr-icon">📅</span><span>Date: &nbsp;<span class="sr-val" id="sum-date">—</span></span></div>
+      <div class="sum-row"><span class="sr-icon">🕐</span><span>Time: &nbsp;<span class="sr-val" id="sum-time">—</span></span></div>
+      <div class="sum-row"><span class="sr-icon">👤</span><span>Advisor: &nbsp;<span class="sr-val" id="sum-sa">Mia Chen</span></span></div>
+      <div class="sum-row"><span class="sr-icon">💎</span><span>Dream Piece: &nbsp;<span class="sr-val" id="sum-dp">Solitaire Ring — Platinum · Diamond</span></span></div>
+
+      <div class="appt-note">
+        Upon arrival, you'll be welcomed by name and guided to your private suite. Your Dream Piece will be displayed alongside curated physical alternatives. The session is yours — no pressure, no rush.
+      </div>
+
+      <div class="btn-row" style="margin-top:20px;">
+        <button class="btn-primary gold-btn" onclick="confirmBooking()">
+          <span>Confirm Appointment</span>
+          <span class="bi">✦</span>
+        </button>
+        <button class="btn-outline" style="max-width:80px;padding:15px 12px;" onclick="showPage(2)">
+          <span>←</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Confirmation -->
+    <div id="booking-success">
+      <div class="bs-diamond">🤍</div>
+      <h2>We'll be ready for you,<br><em>Daria.</em></h2>
+      <p class="bs-sub">"Your appointment is confirmed. Your piece is being held. Your stylist already knows your story."</p>
+
+      <div class="bs-ceremony">
+        <div class="bs-cer-step"><div class="bs-cer-icon">🚪</div><div class="bs-cer-label">Private<br>Welcome</div></div>
+        <div class="bs-cer-step"><div class="bs-cer-icon">💎</div><div class="bs-cer-label">Your Piece<br>Revealed</div></div>
+        <div class="bs-cer-step"><div class="bs-cer-icon">✍️</div><div class="bs-cer-label">Live<br>Engraving</div></div>
+        <div class="bs-cer-step"><div class="bs-cer-icon">🎁</div><div class="bs-cer-label">The Blue<br>Box Moment</div></div>
+      </div>
+
+      <div class="bs-ref-block">
+        <div class="bs-ref-label">Booking Reference</div>
+        <div class="bs-ref-val" id="bs-ref">TCO-2026-0000</div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <button class="btn-outline" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);" onclick="showPage(1)">
+          <span>← Design Another Piece</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /.content-scroll -->
+
+<!-- ── BOTTOM NAV ─────────────────────────────────────────────────────────── -->
+<div id="bottom-nav">
+  <button class="bn-tab active" id="bntab1" onclick="showPage(1)">
+    <div class="bn-icon">💎</div>
+    <div class="bn-label">Atelier</div>
+  </button>
+  <button class="bn-tab" id="bntab2" onclick="showPage(2)">
+    <div class="bn-icon">✦</div>
+    <div class="bn-label">Milestone</div>
+  </button>
+  <button class="bn-tab gold" id="bntab3" onclick="showPage(3)">
+    <div class="bn-icon">🏛</div>
+    <div class="bn-label">Boutique</div>
+  </button>
+</div>
+
+      </div><!-- /.app-shell -->
+
+      <!-- ── PREVIEW OVERLAY ──────────────────────────────────────── -->
+      <div id="pv-overlay">
+        <button class="pv-close" onclick="closePreview()">&#x2715;</button>
+        <div class="pv-eyebrow">✦ &nbsp;Your Dream Piece&nbsp; ✦</div>
+
+        <svg id="pv-ring" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="pv-sGrad" cx="50%" cy="35%" r="55%">
+              <stop id="pv-sg1" offset="0%" stop-color="#eef8ff"/>
+              <stop id="pv-sg2" offset="100%" stop-color="#c0e4f8"/>
+            </radialGradient>
+            <linearGradient id="pv-bGrad" x1="0" y1="0" x2="100%" y2="100%">
+              <stop id="pv-bg1" offset="0%" stop-color="#f0f0f8"/>
+              <stop id="pv-bg2" offset="100%" stop-color="#b8bcd0"/>
+            </linearGradient>
+            <filter id="pv-glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+          <ellipse cx="120" cy="218" rx="50" ry="8" fill="rgba(0,0,0,0.18)"/>
+          <path  id="pv-band-btm" d="M 62 150 Q 120 186 178 150" fill="none" stroke="url(#pv-bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line  id="pv-band-l"   x1="62"  y1="112" x2="62"  y2="152" stroke="url(#pv-bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line  id="pv-band-r"   x1="178" y1="112" x2="178" y2="152" stroke="url(#pv-bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <path  id="pv-band-top" d="M 62 112 Q 120 94 178 112"  fill="none" stroke="url(#pv-bGrad)" stroke-width="16" stroke-linecap="round"/>
+          <line  id="pv-p1" x1="104" y1="100" x2="98"  y2="76"  stroke="url(#pv-bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line  id="pv-p2" x1="136" y1="100" x2="142" y2="76"  stroke="url(#pv-bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line  id="pv-p3" x1="120" y1="96"  x2="120" y2="66"  stroke="url(#pv-bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line  id="pv-p4" x1="108" y1="98"  x2="100" y2="82"  stroke="url(#pv-bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <line  id="pv-p5" x1="132" y1="98"  x2="140" y2="82"  stroke="url(#pv-bGrad)" stroke-width="4.5" stroke-linecap="round"/>
+          <g id="pv-stone" filter="url(#pv-glow)">
+            <polygon id="pv-main"  points="120,42 152,72 120,110 88,72" fill="url(#pv-sGrad)" stroke="#c8dde8" stroke-width="1"/>
+            <polygon id="pv-table" points="120,50 144,72 120,98  96,72" fill="rgba(255,255,255,0.3)"/>
+            <line x1="88"  y1="72" x2="152" y2="72"  stroke="rgba(255,255,255,0.5)"  stroke-width="0.8"/>
+            <line x1="120" y1="42" x2="120" y2="110" stroke="rgba(255,255,255,0.38)" stroke-width="0.8"/>
+          </g>
+          <text id="pv-eng-text" x="120" y="156" text-anchor="middle"
+                font-family="Playfair Display,serif" font-style="italic"
+                font-size="9" fill="rgba(255,255,255,0.7)"></text>
+        </svg>
+
+        <div class="pv-name" id="pv-name">Solitaire Ring — Platinum · Diamond</div>
+        <div class="pv-meta" id="pv-meta">1.00 ct &nbsp;·&nbsp; Round Brilliant &nbsp;·&nbsp; Plain · High Polish</div>
+        <div class="pv-eng"  id="pv-eng"></div>
+        <div class="pv-sep"></div>
+
+        <div class="pv-footer">
+          <div class="pv-stamp">Tiffany &amp; Co &nbsp;·&nbsp; Est. 1837</div>
+          <div class="btn-row-stacked">
+            <button class="btn-outline" style="font-size:10px;padding:13px 16px;border-color:rgba(255,255,255,0.18);color:rgba(255,255,255,0.55);"
+                    onclick="closePreview();showPage(2)">
+              <span>See Your Recommendations</span>
+            </button>
+            <button class="btn-primary tiffany-btn" style="font-size:10px;padding:13px 16px;"
+                    onclick="closePreview();showPage(3)">
+              <span>Reserve Your Appointment</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Home Indicator -->
+      <div class="home-indicator"></div>
+    </div><!-- /.phone-screen -->
+  </div><!-- /.phone-body -->
+</div><!-- /.device -->
+
+<!-- ── JS ────────────────────────────────────────────────────────────────── -->
+<script>
+// ── State ─────────────────────────────────────────────────────────────────
+const S = {
+  metal:'platinum', stone:'diamond', cut:'round', carat:1.0,
+  band:'plain', type:'ring', finish:'polished', size:6, engraving:'',
+  saved:false, wishlist:{}, store:1, date:null, time:null, sa:0,
+};
+
+// ── Lookup tables ──────────────────────────────────────────────────────────
+const METALS = {
+  platinum: { name:'Platinum',    g1:'#f0f0f8', g2:'#b8bcd0', box:'linear-gradient(135deg,#d0d4e8,#9098b8)' },
+  yellow:   { name:'Yellow Gold', g1:'#f0d060', g2:'#c8a020', box:'linear-gradient(135deg,#e8c040,#a87818)' },
+  white:    { name:'White Gold',  g1:'#eceef8', g2:'#c0c8d8', box:'linear-gradient(135deg,#d0d4e8,#9098b8)' },
+  rose:     { name:'Rose Gold',   g1:'#f4bca8', g2:'#dc8870', box:'linear-gradient(135deg,#e8a090,#b86050)' },
+};
+const STONES = {
+  diamond:  { name:'Diamond',        c1:'#eef8ff', c2:'#c0e4f8', stroke:'#a8cce0' },
+  tiffany:  { name:'Tiffany Blue',   c1:'#a8ede8', c2:'#40c0b8', stroke:'#20a098' },
+  emerald:  { name:'Emerald',        c1:'#70f0a0', c2:'#1a9940', stroke:'#0d7730' },
+  sapphire: { name:'Sapphire',       c1:'#80b0f8', c2:'#2050c8', stroke:'#1040a0' },
+  ruby:     { name:'Ruby',           c1:'#f89090', c2:'#b82020', stroke:'#901010' },
+  morganite:{ name:'Morganite',      c1:'#f8c8c0', c2:'#e09088', stroke:'#c07060' },
+};
+const CUTS = {
+  round:'Round Brilliant', oval:'Oval', princess:'Princess',
+  emerald:'Emerald Cut', pear:'Pear', cushion:'Cushion',
+};
+const STORES = {1:'Bond Street, London', 2:'Canary Wharf, London', 3:'Knightsbridge (Harrods)'};
+const SA_NAMES = ['Mia Chen','James Osei','Sofia Reyes'];
+const TIMES = ['10:00','10:45','11:30','12:15','14:00','14:45','15:30','16:15','17:00'];
+const TAKEN = [1,4];
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  ['js1','js2','js3'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if (i < n-1) el.classList.add('done');
+    if (i === n-1) el.classList.add('active');
+  });
+  // Update nav dots
+  ['nd1','nd2','nd3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i===n-1);
+  });
+  // Update bottom nav tabs
+  ['bntab1','bntab2','bntab3'].forEach((id,i) => {
+    document.getElementById(id).classList.toggle('active', i===n-1);
+  });
+  document.getElementById(`page${n}`).classList.add('active');
+  document.getElementById('content-scroll').scrollTo({top:0, behavior:'smooth'});
+  if (n===2) syncP2();
+  if (n===3) syncP3();
+}
+
+// ── Swatch selection ────────────────────────────────────────────────────────
+function selectSwatch(type, key, el) {
+  el.closest('.swatch-row').querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+  el.classList.add('selected');
+  S[type] = key;
+  updateSVG(); updateCard();
+}
+
+// ── Option buttons ──────────────────────────────────────────────────────────
+function selectOpt(type, key, el) {
+  el.closest('.option-row').querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  S[type] = key;
+  if (type==='type') {
+    document.getElementById('size-row').style.display = key==='ring' ? '' : 'none';
+  }
+  updateSVG(); updateCard();
+}
+
+// ── Carat stepper ───────────────────────────────────────────────────────────
+function changeCarat(d) {
+  S.carat = Math.min(5, Math.max(0.5, parseFloat((S.carat + d).toFixed(2))));
+  document.getElementById('carat-val').textContent = S.carat.toFixed(2) + ' ct';
+  updateCard();
+}
+
+// ── Ring size stepper ───────────────────────────────────────────────────────
+function changeSize(d) {
+  S.size = Math.min(13, Math.max(4, S.size + d));
+  const v = S.size % 1 !== 0 ? S.size.toFixed(1) : String(S.size);
+  document.getElementById('size-val').textContent = v;
+  updateCard();
+}
+
+// ── Engraving ───────────────────────────────────────────────────────────────
+function updateEngraving(val) {
+  S.engraving = val;
+  document.getElementById('eng-cnt').textContent = val.length;
+  document.getElementById('eng-prev').textContent = val ? `"${val}"` : '';
+  document.getElementById('svg-eng').textContent = val.slice(0,14);
+  updateCard();
+}
+
+// ── SVG Ring update ─────────────────────────────────────────────────────────
+function updateSVG() {
+  const m = METALS[S.metal], st = STONES[S.stone];
+  document.getElementById('bg1').setAttribute('stop-color', m.g1);
+  document.getElementById('bg2').setAttribute('stop-color', m.g2);
+  document.getElementById('sg1').setAttribute('stop-color', st.c1);
+  document.getElementById('sg2').setAttribute('stop-color', st.c2);
+  document.getElementById('sv-main').setAttribute('stroke', st.stroke);
+  const isPendant  = S.type === 'pendant';
+  const isBracelet = S.type === 'bracelet';
+  const showBand   = !isBracelet;
+  ['svg-band-btm','svg-band-l','svg-band-r','svg-band-top','sv-p1','sv-p2','sv-p3','sv-p4','sv-p5']
+    .forEach(id => { const e = document.getElementById(id); if(e) e.style.display = showBand?'':'none'; });
+  let chain = document.getElementById('svg-chain');
+  if (isPendant) {
+    if (!chain) {
+      chain = document.createElementNS('http://www.w3.org/2000/svg','line');
+      chain.id = 'svg-chain';
+      document.getElementById('ring-svg').insertBefore(chain, document.getElementById('svg-stone'));
+    }
+    chain.setAttribute('x1','120'); chain.setAttribute('y1','8');
+    chain.setAttribute('x2','120'); chain.setAttribute('y2','44');
+    chain.setAttribute('stroke', m.g1); chain.setAttribute('stroke-width','2.5');
+    chain.style.display='';
+    ['sv-p1','sv-p2','sv-p3','sv-p4','sv-p5','svg-band-btm','svg-band-l','svg-band-r','svg-band-top']
+      .forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  } else { if(chain) chain.style.display='none'; }
+  if (isBracelet) {
+    document.getElementById('svg-band-btm').setAttribute('d','M 44 152 Q 120 188 196 152');
+    document.getElementById('svg-band-top').setAttribute('d','M 44 124 Q 120 106 196 124');
+    document.getElementById('svg-band-l').setAttribute('x1','44'); document.getElementById('svg-band-l').setAttribute('x2','44');
+    document.getElementById('svg-band-r').setAttribute('x1','196'); document.getElementById('svg-band-r').setAttribute('x2','196');
+    ['svg-band-btm','svg-band-l','svg-band-r','svg-band-top'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+    ['sv-p1','sv-p2','sv-p3','sv-p4','sv-p5'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  } else {
+    const bd = document.getElementById('svg-band-btm');
+    if(bd) bd.setAttribute('d','M 62 150 Q 120 186 178 150');
+    const bt = document.getElementById('svg-band-top');
+    if(bt) bt.setAttribute('d','M 62 112 Q 120 94 178 112');
+    const bl = document.getElementById('svg-band-l');
+    if(bl){bl.setAttribute('x1','62');bl.setAttribute('x2','62');}
+    const br = document.getElementById('svg-band-r');
+    if(br){br.setAttribute('x1','178');br.setAttribute('x2','178');}
+  }
+  const stoneEl = document.getElementById('sv-main');
+  const tableEl = document.getElementById('sv-table');
+  if (S.cut === 'oval') {
+    stoneEl.setAttribute('points','120,48 155,72 120,108 85,72');
+    tableEl.setAttribute('points','120,56 148,72 120,100 92,72');
+  } else if (S.cut === 'princess') {
+    stoneEl.setAttribute('points','90,48 150,48 150,108 90,108');
+    tableEl.setAttribute('points','96,54 144,54 144,102 96,102');
+  } else if (S.cut === 'emerald') {
+    stoneEl.setAttribute('points','100,42 140,42 152,72 140,108 100,108 88,72');
+    tableEl.setAttribute('points','104,50 136,50 146,72 136,100 104,100 94,72');
+  } else if (S.cut === 'pear') {
+    stoneEl.setAttribute('points','120,40 152,70 148,100 120,112 92,100 88,70');
+    tableEl.setAttribute('points','120,48 144,70 142,98 120,106 98,98 96,70');
+  } else if (S.cut === 'cushion') {
+    stoneEl.setAttribute('points','96,46 144,46 156,74 144,110 96,110 84,74');
+    tableEl.setAttribute('points','100,54 140,54 150,74 140,102 100,102 90,74');
+  } else {
+    stoneEl.setAttribute('points','120,42 152,72 120,110 88,72');
+    tableEl.setAttribute('points','120,50 144,72 120,98 96,72');
+  }
+}
+
+// ── Dream card update ───────────────────────────────────────────────────────
+function updateCard() {
+  const m = METALS[S.metal], st = STONES[S.stone];
+  document.getElementById('dc-metal').textContent  = m.name;
+  document.getElementById('dc-stone').textContent  = st.name;
+  document.getElementById('dc-cut').textContent    = CUTS[S.cut] || S.cut;
+  document.getElementById('dc-carat').textContent  = S.carat.toFixed(2) + ' ct';
+  document.getElementById('dc-band').textContent   = cap(S.band) + ' · ' + cap(S.finish);
+  const sizeStr = S.type==='ring' ? ` · Size ${S.size%1!==0?S.size.toFixed(1):S.size}` : '';
+  document.getElementById('dc-type').textContent   = cap(S.type) + sizeStr;
+  document.getElementById('dc-eng').textContent    = S.engraving || 'None';
+  document.getElementById('dc-box').style.background = m.box;
+}
+
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function dreamPieceName() {
+  const m = METALS[S.metal], st = STONES[S.stone];
+  return `${cap(S.type)} — ${m.name} · ${st.name}`;
+}
+function dreamPieceMeta() {
+  const sizeStr = S.type==='ring' ? `Size ${S.size%1!==0?S.size.toFixed(1):S.size} · ` : '';
+  const eng = S.engraving ? `"${S.engraving}"` : 'No engraving';
+  return `${S.carat.toFixed(2)} ct · ${CUTS[S.cut]||S.cut} · ${cap(S.band)} band · ${cap(S.finish)} · ${sizeStr}${eng}`;
+}
+
+// ── Save ────────────────────────────────────────────────────────────────────
+function savepiece() {
+  S.saved = true;
+  document.getElementById('save-success').classList.add('show');
+  document.getElementById('save-btn').textContent = '✓ Piece Preserved';
+  document.getElementById('save-btn').style.background = 'var(--Tdark)';
+  document.getElementById('save-success').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// ── Page 2 sync ─────────────────────────────────────────────────────────────
+function syncP2() {
+  document.getElementById('p2-dp-name').textContent = dreamPieceName();
+  document.getElementById('p2-dp-meta').textContent = S.saved ? 'Saved · Ready for your stylist' : 'Not yet saved — return to step 1';
+  document.getElementById('sum-dp').textContent = dreamPieceName();
+}
+
+// ── Milestone selector ──────────────────────────────────────────────────────
+const PRODUCTS = {
+  anniversary: [
+    {id:'a1',tag:'For Two',name:'Tiffany True® Engagement Ring',tagline:'A shared symbol of choosing, again.',price:'£4,800',gem:'💍'},
+    {id:'a2',tag:'Anniversary',name:'Return to Tiffany® Love Bracelet',tagline:'A link that never loosens.',price:'£620',gem:'💛'},
+    {id:'a3',tag:'Keepsake',name:'Elsa Peretti® Bone Cuff',tagline:'Worn close, remembered always.',price:'£1,240',gem:'✨'},
+  ],
+  birthday: [
+    {id:'b1',tag:'Milestone',name:'Tiffany Soleste® Ring',tagline:'For the day that belongs entirely to her.',price:'£3,200',gem:'💎'},
+    {id:'b2',tag:'Treat',name:'T Smile Pendant Necklace',tagline:'Joy, worn in eighteen-karat gold.',price:'£890',gem:'😊'},
+    {id:'b3',tag:'Bold',name:'Tiffany HardWear® Earrings',tagline:'Unmistakable. Unrepeatable.',price:'£1,120',gem:'✨'},
+  ],
+  graduation: [
+    {id:'g1',tag:'New Chapter',name:'Return to Tiffany® Tag Necklace',tagline:'A beginning, held in silver.',price:'£340',gem:'🎓'},
+    {id:'g2',tag:'Achievement',name:'T Bar Chain Bracelet',tagline:'Every milestone deserves one of these.',price:'£480',gem:'✨'},
+    {id:'g3',tag:'Debut',name:'Tiffany Infinity Earrings',tagline:'No endings. Only continuations.',price:'£560',gem:'♾️'},
+  ],
+  proposal: [
+    {id:'p1',tag:'The One',name:'Tiffany Setting® Solitaire',tagline:'The ring that defined the question.',price:'£7,200',gem:'💍'},
+    {id:'p2',tag:'Halo',name:'Tiffany Soleste® Round Brilliant',tagline:'Light from every conceivable angle.',price:'£9,400',gem:'💎'},
+    {id:'p3',tag:'Modern',name:'Tiffany Novo® Cushion Cut',tagline:'A contemporary way to say forever.',price:'£8,100',gem:'✨'},
+  ],
+  'self-gift': [
+    {id:'s1',tag:'For You',name:'Paloma Picasso® Loving Heart',tagline:'Because you deserve forever too.',price:'£780',gem:'💛'},
+    {id:'s2',tag:'Power',name:'Tiffany T Wire Ring',tagline:'Your story. Your metal. Your terms.',price:'£420',gem:'✨'},
+    {id:'s3',tag:'Icon',name:'Jean Schlumberger® Bangle',tagline:'Worn by icons. Now, by you.',price:'£2,400',gem:'💎'},
+  ],
+};
+
+function selectMilestone(el, key, titleText, icon, headingText, bodyText) {
+  document.querySelectorAll('.m-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ms-title').textContent  = titleText;
+  document.getElementById('ms-icon').textContent   = icon;
+  document.getElementById('ms-label').textContent  = cap(key);
+  document.getElementById('ms-body').textContent   = `"${bodyText}"`;
+  renderProducts(key);
+}
+
+function renderProducts(key) {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = (PRODUCTS[key] || PRODUCTS.anniversary).map(p => `
+    <div class="prod-card">
+      <div class="prod-img">
+        <div class="prod-tag">${p.tag}</div>
+        <svg width="60" height="60" viewBox="0 0 80 80"><text x="40" y="56" text-anchor="middle" font-size="40">${p.gem}</text></svg>
+      </div>
+      <div class="prod-body">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-tagline">${p.tagline}</div>
+        <div class="prod-price">${p.price}</div>
+        <div class="prod-actions">
+          <button class="wl-btn ${S.wishlist[p.id]?'saved':''}" id="wl-${p.id}" onclick="toggleWL('${p.id}',this)">
+            <span>${S.wishlist[p.id]?'♥':'♡'}</span>
+            ${S.wishlist[p.id]?'Saved':'Save'}
+          </button>
+          <button class="preview-link" onclick="showPage(1)">↗</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleWL(id, btn) {
+  S.wishlist[id] = !S.wishlist[id];
+  btn.className = `wl-btn ${S.wishlist[id]?'saved':''}`;
+  btn.innerHTML = `<span>${S.wishlist[id]?'♥':'♡'}</span> ${S.wishlist[id]?'Saved':'Save'}`;
+  btn.style.transform = 'scale(1.05)';
+  setTimeout(()=>btn.style.transform='', 180);
+}
+
+// ── Page 3 sync ─────────────────────────────────────────────────────────────
+function syncP3() {
+  const name = dreamPieceName(), meta = dreamPieceMeta();
+  document.getElementById('p3-dp-name').textContent = name;
+  document.getElementById('p3-dp-meta').textContent = meta;
+  document.getElementById('sum-dp').textContent = name;
+}
+
+// ── Booking: store ──────────────────────────────────────────────────────────
+function selectStore(el, id) {
+  document.querySelectorAll('.store-opt').forEach(o => {
+    o.classList.remove('selected');
+    o.querySelector('.so-check').textContent = '';
+  });
+  el.classList.add('selected');
+  el.querySelector('.so-check').textContent = '✓';
+  S.store = id;
+  document.getElementById('sum-store').textContent = STORES[id];
+}
+
+// ── Booking: calendar ───────────────────────────────────────────────────────
+let calY, calM;
+function initCal() {
+  const now = new Date(); calY = now.getFullYear(); calM = now.getMonth(); renderCal();
+}
+function renderCal() {
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-label').textContent = `${MONTHS[calM]} ${calY}`;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  ['Mo','Tu','We','Th','Fr','Sa','Su'].forEach(d => {
+    const el = document.createElement('div'); el.className='cal-dn'; el.textContent=d; grid.appendChild(el);
+  });
+  const today = new Date();
+  const first = new Date(calY, calM, 1);
+  const startDow = (first.getDay()+6)%7;
+  const daysInM = new Date(calY, calM+1, 0).getDate();
+  for (let i=0;i<startDow;i++){const e=document.createElement('div');e.className='cal-day empty';grid.appendChild(e);}
+  for (let d=1;d<=daysInM;d++){
+    const el = document.createElement('div');
+    const date = new Date(calY,calM,d);
+    const isPast = date < new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    const isSun = date.getDay()===0;
+    const isToday = date.toDateString()===today.toDateString();
+    const dateStr = `${calY}-${String(calM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    el.className = `cal-day ${isPast||isSun?'disabled':''} ${isToday?'today':''} ${S.date===dateStr?'selected':''}`;
+    el.textContent = d;
+    if (!isPast&&!isSun) el.onclick = ()=>pickDate(dateStr,d,MONTHS[calM]);
+    grid.appendChild(el);
+  }
+}
+function pickDate(str,d,month){S.date=str;renderCal();document.getElementById('sum-date').textContent=`${d} ${month} ${calY}`;renderTimes();}
+function prevMonth(){if(calM===0){calM=11;calY--;}else calM--;renderCal();}
+function nextMonth(){if(calM===11){calM=0;calY++;}else calM++;renderCal();}
+
+// ── Booking: times ──────────────────────────────────────────────────────────
+function renderTimes(){
+  document.getElementById('time-grid').innerHTML = TIMES.map((t,i)=>{
+    const taken=TAKEN.includes(i), sel=S.time===t&&!taken;
+    return `<div class="time-slot ${taken?'taken':''} ${sel?'selected':''}" onclick="${taken?'':'pickTime(\''+t+'\',this)'}">${t}</div>`;
+  }).join('');
+}
+function pickTime(t,el){
+  S.time=t;
+  document.querySelectorAll('.time-slot').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('sum-time').textContent=t;
+}
+
+// ── Booking: SA ─────────────────────────────────────────────────────────────
+function selectSA(el,idx){
+  document.querySelectorAll('.sa-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  S.sa=idx;
+  document.getElementById('sum-sa').textContent=SA_NAMES[idx];
+}
+
+// ── Confirm ──────────────────────────────────────────────────────────────────
+function confirmBooking(){
+  if(!S.date){alert('Please select a date.');return;}
+  if(!S.time){alert('Please select a time.');return;}
+  const ref='TCO-'+new Date().getFullYear()+'-'+String(Math.floor(Math.random()*9000)+1000);
+  document.getElementById('bs-ref').textContent=ref;
+  const el=document.getElementById('booking-success');
+  el.classList.add('show');
+  el.scrollIntoView({behavior:'smooth'});
+}
+
+// ── Preview overlay ──────────────────────────────────────────────────────────
+function openPreview() {
+  syncPvSVG();
+  document.getElementById('pv-overlay').classList.add('show');
+}
+function closePreview() {
+  document.getElementById('pv-overlay').classList.remove('show');
+}
+function syncPvSVG() {
+  const m = METALS[S.metal], st = STONES[S.stone];
+  document.getElementById('pv-sg1').setAttribute('stop-color', st.c1);
+  document.getElementById('pv-sg2').setAttribute('stop-color', st.c2);
+  document.getElementById('pv-bg1').setAttribute('stop-color', m.g1);
+  document.getElementById('pv-bg2').setAttribute('stop-color', m.g2);
+  document.getElementById('pv-main').setAttribute('stroke', st.stroke);
+  const isPendant  = S.type === 'pendant';
+  const isBracelet = S.type === 'bracelet';
+  ['pv-band-btm','pv-band-l','pv-band-r','pv-band-top','pv-p1','pv-p2','pv-p3','pv-p4','pv-p5']
+    .forEach(id => { const e=document.getElementById(id); if(e) e.style.display = isBracelet?'':''; });
+  // Pendant chain
+  let ch = document.getElementById('pv-chain');
+  if (isPendant) {
+    if (!ch) {
+      ch = document.createElementNS('http://www.w3.org/2000/svg','line');
+      ch.id = 'pv-chain';
+      document.getElementById('pv-ring').insertBefore(ch, document.getElementById('pv-stone'));
+    }
+    ch.setAttribute('x1','120'); ch.setAttribute('y1','8'); ch.setAttribute('x2','120'); ch.setAttribute('y2','44');
+    ch.setAttribute('stroke', m.g1); ch.setAttribute('stroke-width','2.5'); ch.style.display='';
+    ['pv-p1','pv-p2','pv-p3','pv-p4','pv-p5','pv-band-btm','pv-band-l','pv-band-r','pv-band-top']
+      .forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  } else { if(ch) ch.style.display='none'; }
+  // Bracelet
+  if (isBracelet) {
+    document.getElementById('pv-band-btm').setAttribute('d','M 44 152 Q 120 188 196 152');
+    document.getElementById('pv-band-top').setAttribute('d','M 44 124 Q 120 106 196 124');
+    ['pv-band-btm','pv-band-l','pv-band-r','pv-band-top'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='';});
+    ['pv-p1','pv-p2','pv-p3','pv-p4','pv-p5'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  } else if (!isPendant) {
+    const bd=document.getElementById('pv-band-btm'); if(bd) bd.setAttribute('d','M 62 150 Q 120 186 178 150');
+    const bt=document.getElementById('pv-band-top'); if(bt) bt.setAttribute('d','M 62 112 Q 120 94 178 112');
+  }
+  // Stone cut
+  const se=document.getElementById('pv-main'), te=document.getElementById('pv-table');
+  if      (S.cut==='oval')     { se.setAttribute('points','120,48 155,72 120,108 85,72');          te.setAttribute('points','120,56 148,72 120,100 92,72'); }
+  else if (S.cut==='princess') { se.setAttribute('points','90,48 150,48 150,108 90,108');           te.setAttribute('points','96,54 144,54 144,102 96,102'); }
+  else if (S.cut==='emerald')  { se.setAttribute('points','100,42 140,42 152,72 140,108 100,108 88,72'); te.setAttribute('points','104,50 136,50 146,72 136,100 104,100 94,72'); }
+  else if (S.cut==='pear')     { se.setAttribute('points','120,40 152,70 148,100 120,112 92,100 88,70'); te.setAttribute('points','120,48 144,70 142,98 120,106 98,98 96,70'); }
+  else if (S.cut==='cushion')  { se.setAttribute('points','96,46 144,46 156,74 144,110 96,110 84,74');  te.setAttribute('points','100,54 140,54 150,74 140,102 100,102 90,74'); }
+  else { se.setAttribute('points','120,42 152,72 120,110 88,72'); te.setAttribute('points','120,50 144,72 120,98 96,72'); }
+  document.getElementById('pv-eng-text').textContent = S.engraving ? S.engraving.slice(0,14) : '';
+  const sizeStr = S.type==='ring' ? ` · Size ${S.size%1!==0?S.size.toFixed(1):S.size}` : '';
+  document.getElementById('pv-name').textContent = dreamPieceName();
+  document.getElementById('pv-meta').textContent  = `${S.carat.toFixed(2)} ct  ·  ${CUTS[S.cut]||S.cut}  ·  ${cap(S.band)} · ${cap(S.finish)}${sizeStr}`;
+  document.getElementById('pv-eng').textContent   = S.engraving ? `"${S.engraving}"` : '';
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+updateSVG();
+updateCard();
+renderProducts('anniversary');
+initCal();
+renderTimes();
+</script>
+</body>
+</html>
